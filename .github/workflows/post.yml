@@ -39,4 +39,4 @@ jobs:
       run: |
         echo "✅ Dry run: Would post to LinkedIn page $LINKEDIN_PAGE_URN"
         # Uncomment below to actually post (use with caution)
-        # python -c "from linkedin_poster import post_linkedin; post_linkedin('Test post from GitHub Actions')"
+        python -c "from linkedin_poster import post_linkedin; post_linkedin('Test post from GitHub Actions')"
