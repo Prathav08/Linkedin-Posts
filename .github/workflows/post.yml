@@ -1,0 +1,23 @@
+name: LinkedIn Scheduler
+on:
+  schedule:
+    - cron: '30 23 * * 2,5'  # Tuesday & Friday 09:30 AEST (UTC+10)
+  workflow_dispatch:
+
+jobs:
+  linkedin_post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run Scheduler
+        env:
+          RAINDROP_TOKEN: ${{ secrets.RAINDROP_TOKEN }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+        run: python linkedin_post_scheduler.py
