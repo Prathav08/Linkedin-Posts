@@ -1,15 +1,12 @@
 import requests
-from config import LINKEDIN_ACCESS_TOKEN
+from config import LINKEDIN_ACCESS_TOKEN, LINKEDIN_PAGE_URN
 
-def post_to_linkedin(content):
+def post_linkedin(content):
     url = "https://api.linkedin.com/v2/ugcPosts"
-    headers = {
-        "Authorization": f"Bearer {LINKEDIN_ACCESS_TOKEN}",
-        "Content-Type": "application/json",
-        "X-Restli-Protocol-Version": "2.0.0"
-    }
+    headers = {"Authorization": f"Bearer {LINKEDIN_ACCESS_TOKEN}", "Content-Type": "application/json"}
+
     payload = {
-        "author": "urn:li:person:YOUR_PERSON_URN",  # Replace with your LinkedIn URN
+        "author": LINKEDIN_PAGE_URN,
         "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
@@ -19,8 +16,9 @@ def post_to_linkedin(content):
         },
         "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"}
     }
+
     response = requests.post(url, headers=headers, json=payload)
     if response.status_code == 201:
-        print("✅ LinkedIn post created successfully")
+        print("✅ LinkedIn post published!")
     else:
-        print("❌ LinkedIn post failed", response.text)
+        print(f"❌ LinkedIn API Error {response.status_code}: {response.text}")
